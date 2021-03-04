@@ -16,3 +16,7 @@ $ docker-compose up -d redis
 ```
 $ make server
 ```
+
+## Test Result
+
+![alt text](test_result.png "Title")

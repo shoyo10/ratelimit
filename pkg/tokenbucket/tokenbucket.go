@@ -29,10 +29,15 @@ func New(cfg Config) *Bucket {
 	}
 }
 
-// TokenAvaliable if there are enough tokens, it remove one token and return true, otherwise return false
+// TokenAvaliable remove one token if there are enough tokens.
 func (b *Bucket) TokenAvaliable() bool {
+	return b.TokenAvaliableN(1)
+}
+
+// TokenAvaliableN if there are enough tokens, it will remove tokens and return true, otherwise return false
+func (b *Bucket) TokenAvaliableN(amount int64) bool {
 	b.addTokens()
-	return b.removeToken()
+	return b.removeTokenN(amount)
 }
 
 func (b *Bucket) addTokens() {
@@ -54,13 +59,13 @@ func (b *Bucket) addTokens() {
 	b.LatestAddedAt = b.LatestAddedAt.Add(time.Duration(newTokens) * b.Cfg.Rate)
 }
 
-func (b *Bucket) removeToken() bool {
+func (b *Bucket) removeTokenN(amount int64) bool {
 	b.Mutex.Lock()
 	defer b.Mutex.Unlock()
 
-	if b.CurrentTokens == 0 {
+	if b.CurrentTokens == 0 || amount > b.CurrentTokens {
 		return false
 	}
-	b.CurrentTokens--
+	b.CurrentTokens -= amount
 	return true
 }
