@@ -1,0 +1,13 @@
+log:
+  debug: true
+  local: true
+  app_id: ratelimit
+  env: dev
+http:
+  debug: true
+  address: ":9090"
+redis:
+  addr: "host.docker.internal:6379"
+ratelimit:
+  interval: 60000 # 單位: millisecond
+  max_request: 60

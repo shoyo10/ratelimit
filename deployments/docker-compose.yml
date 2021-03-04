@@ -1,0 +1,14 @@
+version: "3"
+services:
+  server:
+    depends_on:
+      - "redis"
+    image: httpserver:latest
+    ports:
+      - "9090:9090"
+    links:
+      - redis
+  redis:
+    image: "redis:6.2.0"
+    ports:
+      - 6379:6379
